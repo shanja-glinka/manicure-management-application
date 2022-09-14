@@ -1,4 +1,4 @@
-const Controller = require("./Controller");
+const Controller = require("../modules/core/Controller");
 
 class Root extends Controller {
     constructor() {
@@ -6,16 +6,16 @@ class Root extends Controller {
     }
 
     modelRoot(req, res, next) {
-        res.status(200).send("");
+        this.responce.new(res).send("OK");
     }
 
     htmlError404(req, res, next) {
-        res.status(404).json("");
+        this.responce.new(res, 406).send("Method not accepted");
     }
 
     onroute(app) {
-        app.use(this.htmlError404);
-        app.get("/", this.modelRoot);
+        app.get("/", (req, res, next) => { this.modelRoot(req, res, next); });
+        app.use((req, res, next) => { this.htmlError404(req, res, next); });
 
         return app;
     }

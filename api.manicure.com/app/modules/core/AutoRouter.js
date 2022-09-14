@@ -1,4 +1,4 @@
-const Exceptions = require("../modules/core/Exceptions");
+const Exceptions = require("./Exceptions");
 
 class AutoRouter {
     constructor() {
@@ -8,15 +8,14 @@ class AutoRouter {
 
     getContollers() {
         let controllers = [];
-        let controllersPath = this.getContollersPath("/AutoRouter.js");
+        let controllersPath = this.getContollersPath();
 
         controllersPath.forEach(file => {
             try {
                 let controller = require(file);
                 controllers.push(new controller());
             } catch (ex) {
-                // throw ex;
-                this.exception.throw("Cannot read Controller", ex);
+                this.exception.throw("Cannot read Controller: " + file, ex);
             }
         });
 
@@ -30,9 +29,11 @@ class AutoRouter {
         let files = fs.readdirSync("./app/controllers");
 
         for (let i in files)
-            if (files[i].indexOf("AutoRouter.js") == -1 && files[i].indexOf("Controller.js") == -1)
-                result.push("./" + files[i].substring(0, files[i].indexOf(".js")));
+            if (files[i].indexOf("Root.js") == -1)
+                result.push("../../controllers/" + files[i].substring(0, files[i].indexOf(".js")));
 
+        result.push("../../controllers/Root");
+        
         return result;
     }
 

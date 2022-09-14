@@ -15,7 +15,7 @@ function TestCall(testLable, testFuncCall) {
 
 const TestRoute = {
     autoRoute: () => {
-        const Route = require("./app/controllers/AutoRouter");
+        const Route = require("./app/modules/core/AutoRouter");
         let r = new Route();
 
         const express = require("express");
